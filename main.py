@@ -1,13 +1,5 @@
-steps:
-  - uses: actions/checkout@v4
+def run():
+    return "Hello J - 자동화 시작됨"
 
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.11'
-
-  - name: Install dependencies
-    run: pip install requests
-
-  - name: Run script
-    run: python main.py
+if __name__ == "__main__":
+    print(run())
