@@ -24,3 +24,9 @@ jobs:
         run: python main.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Upload output file
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-script
+          path: output/*.txt
