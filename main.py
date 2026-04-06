@@ -1,28 +1,35 @@
-import requests
-import os
+data = {
+    "model": "gpt-4.1-mini",
+    "input": """
+You are a YouTube script writer for a senior brain training channel.
 
-API_KEY = os.getenv("OPENAI_API_KEY")
+Create a 10-minute brain quiz video.
 
-def generate():
-    if not API_KEY:
-        raise ValueError("OPENAI_API_KEY is missing")
+TARGET:
+- Seniors (age 55+)
+- Easy to understand
+- Fun and engaging
 
-    url = "https://api.openai.com/v1/responses"
+FORMAT:
 
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
+1. Hook (attention grabbing)
+2. Short intro
+3. 5 quiz questions
 
-    data = {
-        "model": "gpt-4.1-mini",
-        "input": "Say hello to J and confirm automation is working"
-    }
+Each question format:
+- Question
+- 5 second pause cue
+- Answer
+- Short explanation
 
-    res = requests.post(url, headers=headers, json=data)
-    res.raise_for_status()
+Tone:
+- Warm
+- Friendly
+- Encouraging
 
-    return res.json()["output"][0]["content"][0]["text"]
+Topic:
+Visual memory / brain test
 
-if __name__ == "__main__":
-    print(generate())
+Output clean script only.
+"""
+}
