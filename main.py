@@ -1,70 +1,40 @@
-data = {
-    "model": "gpt-4.1-mini",
-    "input": """
-You are a professional YouTube script writer for a senior brain training channel.
+import requests
+import os
 
-Create a FULL 10-minute brain training video script.
+API_KEY = os.getenv("OPENAI_API_KEY")
 
-TARGET AUDIENCE:
-- Age 55+
-- Simple English
-- Easy to understand
-- Encouraging and friendly tone
+def generate():
+    if not API_KEY:
+        raise ValueError("OPENAI_API_KEY is missing")
 
-VIDEO STRUCTURE:
+    url = "https://api.openai.com/v1/chat/completions"
 
-1. HOOK (0:00–0:30)
-- Start with a strong attention-grabbing line
-- Example: "90% of seniors fail this test. Can you pass?"
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-2. INTRO (0:30–1:30)
-- Warm greeting
-- Explain brain benefits
-- Build curiosity
+    data = {
+        "model": "gpt-4o-mini",
+        "messages": [
+            {
+                "role": "user",
+                "content": "Give me a YouTube script for seniors brain training."
+            }
+        ]
+    }
 
-3. MAIN QUIZ (1:30–9:00)
-- Create EXACTLY 10 questions
-- Difficulty progression:
-  - Easy (3)
-  - Medium (4)
-  - Hard (3)
+    res = requests.post(url, headers=headers, json=data)
 
-Each question MUST follow this format:
+    print("STATUS:", res.status_code)
+    print("RAW RESPONSE:", res.text)
 
-Question 1:
-[Clear question]
+    res.raise_for_status()
 
-(5 seconds pause)
+    return res.json()["choices"][0]["message"]["content"]
 
-Answer:
-[Correct answer]
 
-Explanation:
-[Short simple explanation]
-
-4. SCORE SECTION (9:00–10:00)
-
-- 10/10 → "Excellent memory!"
-- 7–9 → "Great job!"
-- 4–6 → "Good effort!"
-- 0–3 → "Keep training your brain!"
-
-STYLE RULES:
-- Keep sentences short
-- Use simple vocabulary
-- Speak directly to the viewer
-- Make it engaging and positive
-- No complicated words
-
-IMPORTANT:
-- Minimum 800–1200 words
-- Clean format (no JSON)
-- No extra explanations outside the script
-
-TOPIC:
-Visual memory test / brain challenge
-
-OUTPUT:
-Only the script (ready to read for video)
-"""
-}
+if __name__ == "__main__":
+    result = generate()
+    print("\n\n===== FINAL OUTPUT =====\n")
+    print(result)
